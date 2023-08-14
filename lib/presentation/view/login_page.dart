@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 
-import 'package:flutter_auth_login/service/client_service.dart';
-import 'package:flutter_auth_login/service/login_service.dart';
+import 'package:flutter_auth_login/domain/service/client_service.dart';
+import 'package:flutter_auth_login/domain/service/login_service.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_auth_login/repository/db/auth_db_service.dart';
-import 'package:flutter_auth_login/repository/db/token_db_service.dart';
+import 'package:flutter_auth_login/domain/model/login_response.dart';
 
-import '../core/constants/constant.dart';
-import '../model/login_response.dart';
+import 'package:flutter_auth_login/domain/repository/db/token_db_service.dart';
+
+import '../../core/constants/constant.dart';
 
 class DioClientToken {
   TokenDB _loginDBService = TokenDB();

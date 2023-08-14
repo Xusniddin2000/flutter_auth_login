@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_auth_login/model/login_response.dart';
+
+import 'package:flutter_auth_login/domain/model/login_response.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 

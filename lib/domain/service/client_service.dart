@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_auth_login/core/constants/constant.dart';
-import 'package:flutter_auth_login/model/login_response.dart';
-import 'package:flutter_auth_login/repository/db/auth_db_service.dart';
+import 'package:flutter_auth_login/domain/model/login_response.dart';
+
+import 'package:flutter_auth_login/domain/repository/db/auth_db_service.dart';
 
 
 class DioClient {

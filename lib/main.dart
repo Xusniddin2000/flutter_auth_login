@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_login/repository/db/auth_db_service.dart';
-import 'package:flutter_auth_login/view/login_page.dart';
+import 'package:flutter_auth_login/domain/repository/db/auth_db_service.dart';
+import 'package:flutter_auth_login/presentation/view/login_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {

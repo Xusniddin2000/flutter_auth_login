@@ -16,12 +16,13 @@ class LoginResponseAdapter extends TypeAdapter<LoginResponse> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LoginResponse()
-      .._tokenType = fields[0] as String?
-      .._tokenBody = fields[1] as String?
-      .._userName = fields[2] as String?
-      .._refreshToken = fields[3] as String?
-      .._timestamp = fields[4] as String?;
+    return LoginResponse(
+      tokenType: fields[0] as String?,
+      tokenBody: fields[1] as String?,
+      userName: fields[2] as String?,
+      refreshToken: fields[3] as String?,
+      timestamp: fields[4] as String?,
+    );
   }
 
   @override
@@ -29,15 +30,15 @@ class LoginResponseAdapter extends TypeAdapter<LoginResponse> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj._tokenType)
+      ..write(obj.tokenType)
       ..writeByte(1)
-      ..write(obj._tokenBody)
+      ..write(obj.tokenBody)
       ..writeByte(2)
-      ..write(obj._userName)
+      ..write(obj.userName)
       ..writeByte(3)
-      ..write(obj._refreshToken)
+      ..write(obj.refreshToken)
       ..writeByte(4)
-      ..write(obj._timestamp);
+      ..write(obj.timestamp);
   }
 
   @override

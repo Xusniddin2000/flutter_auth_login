@@ -1,72 +1,99 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+
 part 'login_response.g.dart';
 
-
-
 @HiveType(typeId: 0)
+@immutable
 class LoginResponse {
   @HiveField(0)
-  String? _tokenType;
+ final  String? tokenType;
   @HiveField(1)
-  String? _tokenBody;
+ final  String? tokenBody;
   @HiveField(2)
-  String? _userName;
+ final String?  userName;
   @HiveField(3)
-  String? _refreshToken;
+ final String?  refreshToken;
   @HiveField(4)
-  String? _timestamp;
+ final String? timestamp;
+ const LoginResponse({
+    this.tokenType,
+    this.tokenBody,
+    this.userName,
+    this.refreshToken,
+    this.timestamp,
+  });
 
-  LoginResponse(
-      {String? tokenType,
-      String? tokenBody,
-      String? userName,
-      String? refreshToken,
-      String? timestamp}) {
-    if (tokenType != null) {
-      this._tokenType = tokenType;
-    }
-    if (tokenBody != null) {
-      this._tokenBody = tokenBody;
-    }
-    if (userName != null) {
-      this._userName = userName;
-    }
-    if (refreshToken != null) {
-      this._refreshToken = refreshToken;
-    }
-    if (timestamp != null) {
-      this._timestamp = timestamp;
-    }
+  
+
+  LoginResponse copyWith({
+    String? tokenType,
+    String? tokenBody,
+    String? userName,
+    String? refreshToken,
+    String? timestamp,
+  }) {
+    return LoginResponse(
+      tokenType: tokenType ?? this.tokenType,
+      tokenBody: tokenBody ?? this.tokenBody,
+      userName: userName ?? this.userName,
+      refreshToken: refreshToken ?? this.refreshToken,
+      timestamp: timestamp ?? this.timestamp,
+    );
   }
 
-  String? get tokenType => _tokenType;
-  set tokenType(String? tokenType) => _tokenType = tokenType;
-  String? get tokenBody => _tokenBody;
-  set tokenBody(String? tokenBody) => _tokenBody = tokenBody;
-  String? get userName => _userName;
-  set userName(String? userName) => _userName = userName;
-  String? get refreshToken => _refreshToken;
-  set refreshToken(String? refreshToken) => _refreshToken = refreshToken;
-  String? get timestamp => _timestamp;
-  set timestamp(String? timestamp) => _timestamp = timestamp;
-
-  LoginResponse.fromJson(Map<String, dynamic> json) {
-    _tokenType = json['tokenType'];
-    _tokenBody = json['tokenBody'];
-    _userName = json['userName'];
-    _refreshToken = json['refreshToken'];
-    _timestamp = json['timestamp'];
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'tokenType': tokenType,
+      'tokenBody': tokenBody,
+      'userName': userName,
+      'refreshToken': refreshToken,
+      'timestamp': timestamp,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['tokenType'] = this._tokenType;
-    data['tokenBody'] = this._tokenBody;
-    data['userName'] = this._userName;
-    data['refreshToken'] = this._refreshToken;
-    data['timestamp'] = this._timestamp;
-    return data;
+  factory LoginResponse.fromMap(Map<String, dynamic> map) {
+    return LoginResponse(
+      tokenType: map['tokenType'] != null ? map['tokenType'] as String : null,
+      tokenBody: map['tokenBody'] != null ? map['tokenBody'] as String : null,
+      userName: map['userName'] != null ? map['userName'] as String : null,
+      refreshToken: map['refreshToken'] != null ? map['refreshToken'] as String : null,
+      timestamp: map['timestamp'] != null ? map['timestamp'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory LoginResponse.fromJson(String source) => LoginResponse.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'LoginResponse(tokenType: $tokenType, tokenBody: $tokenBody, userName: $userName, refreshToken: $refreshToken, timestamp: $timestamp)';
+  }
+
+  @override
+  bool operator ==(covariant LoginResponse other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.tokenType == tokenType &&
+      other.tokenBody == tokenBody &&
+      other.userName == userName &&
+      other.refreshToken == refreshToken &&
+      other.timestamp == timestamp;
+  }
+
+  @override
+  int get hashCode {
+    return tokenType.hashCode ^
+      tokenBody.hashCode ^
+      userName.hashCode ^
+      refreshToken.hashCode ^
+      timestamp.hashCode;
   }
 }

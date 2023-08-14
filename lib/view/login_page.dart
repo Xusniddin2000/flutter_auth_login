@@ -1,10 +1,9 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_auth_login/model/login_response.dart';
-import 'package:flutter_auth_login/service/client_service.dart';
 
+import 'package:flutter_auth_login/service/client_service.dart';
+import 'package:flutter_auth_login/service/login_service.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -16,6 +15,8 @@ class AuthLogin extends StatefulWidget {
 class _AuthLoginState extends State<AuthLogin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final DioClient _dioClient = DioClient();
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,9 @@ class _AuthLoginState extends State<AuthLogin> {
                 height: 45,
               ),
               OutlinedButton.icon(
-                  onPressed: () {
-                    login();
+                  onPressed: () async {
+                   await  _dioClient.login(
+                        _usernameController.text, _passwordController.text);
                   },
                   icon: Icon(
                     Icons.login,
@@ -67,20 +69,5 @@ class _AuthLoginState extends State<AuthLogin> {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {}),
     );
-  }
-
-  Future<void> login() async {
-    if (kDebugMode) {
-      print(" User =${_usernameController.text}");
-      print(" Password =${_passwordController.text}");
-    }
-    LoginResponse response = (await DioClient()
-        .login(_usernameController.text, _passwordController.text));
-
-    if (response.userName.toString() == _usernameController.text) {
-      print("UserName yoki parol xato kiritilgan,Qaytadan urunib ko'ring");
-    } else {
-      print(" Enter Successfull");
-    }
   }
 }

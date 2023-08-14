@@ -1,28 +1,87 @@
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:flutter_auth_login/repository/db/auth_db_service.dart';
+import 'package:flutter_auth_login/repository/db/token_db_service.dart';
 
+import '../core/constants/constant.dart';
+import '../model/login_response.dart';
 
-class  AuthService{
+class DioClientToken {
+  TokenDB _loginDBService = TokenDB();
 
-  // Future<void>  login()  async{
-  //   if(passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
-  //     Map<String,String> headers={'Content-type':'application/json'};
-  //     var body=json.encode({'username':usernameController.text,'password':passwordController.text});
-  //     var    response=  await http.post(Uri.parse(AppConst.apiUrl),
-  //         headers:headers,body: body);
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: AppConstants.baseUrl,
+    connectTimeout:
+        const Duration(milliseconds: AppConstants.connectionTimeout),
+    receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
+    responseType: ResponseType.json,
+  ));
 
-  //     if(response.statusCode==200){
-  //       print("ISHLADI >>>>>>>");
+  void _addToken(String tokenType, String tokenBody) {
+    _dio.options.headers["Authorization"] = "$tokenType $tokenBody";
+  }
 
-  //       Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context)=>SecondPage()));
-  //     } else {
+  Future<LoginResponse> login(String username, String password) async {
+    try {
+      Response response = await _dio.post(
+        '/auth/login',
+        data: {'username': username, 'password': password},
+      );
 
-  //       ScaffoldMessenger.of(context as BuildContext).showSnackBar(SnackBar(content: Text(" Invalid Credntials.")));
+      if (response.statusCode == 200) {
+        LoginResponse loginResponse =
+            LoginResponse.fromJson(jsonEncode(response.data));
+        print(loginResponse);
 
-  //     }
-  //   }else{
-  //     ScaffoldMessenger.of(context as BuildContext).showSnackBar(SnackBar(content: Text(" Black Fin Not  Allowed")));
-  //   }
+        if (loginResponse.tokenType != null &&
+            loginResponse.tokenBody != null) {
+          _loginDBService.writeToDB(loginResponse.tokenType.toString(),
+              loginResponse.tokenBody.toString());
+          print(loginResponse.tokenType.toString());
+          print(loginResponse.tokenBody.toString());
 
+            
+            
+          //BU Alohida TokenBox uchun edi
+          _addToken(_loginDBService.tokenBox!.get("tokenType"),
+               _loginDBService.tokenBox!.get("tokenBody"));
 
-  // }
+          print(_dio.options.headers);
+
+          Response resp = await get("/user/me");
+          print(resp);
+        }
+
+        return loginResponse;
+      } else {
+        throw Exception("Login failed");
+      }
+    } on DioError catch (e) {
+      // Handle DioError here if needed
+      rethrow;
+    }
+  }
+
+  Future<Response> get(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final Response response = await _dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } catch (e) {
+      // Handle DioError here if needed
+      rethrow;
+    }
+  }
 }
